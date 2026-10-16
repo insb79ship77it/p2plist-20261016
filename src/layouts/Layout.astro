@@ -1,0 +1,70 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonicalUrl?: string;
+}
+
+const { 
+  title, 
+  description = "P2P 사이트 순위를 볼 때 확인해야 할 평가 기준과 파일공유 서비스 선택 방법을 정리했습니다.", 
+  canonicalUrl = "https://p2plist-a2-261007.pages.dev/" 
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="LinkRank" />
+  </head>
+  <body>
+    <Header />
+    <slot />
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #f7f8fa;
+    --paper: #ffffff;
+    --ink: #1f242e;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --soft: #f3f4f6;
+    --dark: #111827;
+    --badge-bg: #f3f4f6;
+    --badge-text: #4b5563;
+    --green: #23885b;
+    --greenbg: #eaf8f0;
+    --red: #d94b55;
+    --redbg: #fff0f1;
+    --blue: #3b84d6;
+    --bluebg: #eef5ff;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Inter, "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  a { color: inherit; text-decoration: none; }
+</style>
