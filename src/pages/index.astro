@@ -1,6 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+// 오늘 날짜 자동 생성 (YYYY. MM. DD. 형식)
+const today = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit'
+}).format(new Date());
+
 const sites = [
   ["꿀파일", "10,000MB 무료쿠폰", "SNS·네이버·카카오·구글 연동", "인증 이벤트", "https://www.google.com/search?q=1"],
   ["지니파일", "10,000MB 무료쿠폰", "SNS 연동 · 결제할인", "출퇴근시간 무료", "https://www.google.com/search?q=2"],
@@ -10,8 +17,7 @@ const sites = [
   ["파일샛", "10,000MB 무료쿠폰", "SNS(카톡,구글) 초간단 가입!", "이벤트 UP!", "https://www.google.com/search?q=6"],
   ["파일몽", "10,000MB 무료쿠폰", "주민번호 NO!", "SNS, Email 간편가입", "https://www.google.com/search?q=7"],
   ["파일나라", "10,000MB 무료쿠폰", "주민번호 NO!", "SNS, Email 간편가입", "https://www.google.com/search?q=8"],
-  ["바나나파일", "10,000MB 무료쿠폰", "주민번호 NO!", "SNS, Email 간편가입", "https://www.google.com/search?q=9"],
-
+  ["바나나파일", "10,000MB 무료쿠폰", "주민번호 NO!", "SNS, Email 간편가입", "https://www.google.com/search?q=9"]
 ];
 ---
 
@@ -26,8 +32,12 @@ const sites = [
 
     <section id="ranking" class="section">
       <div class="section-top">
-        <div><div class="section-label">PROMOTED LIST</div><h2>홍보 리스트 정리</h2></div>
-        <div class="section-sub">총 {sites.length}개 · 중복 제외</div>
+        <div>
+          <div class="section-label">PROMOTED LIST</div>
+          <h2>홍보 리스트 정리</h2>
+        </div>
+        <!-- 오늘 날짜 자동 표시 영역 -->
+        <div class="section-sub"><span class="update-dot"></span>{today} 기준 (총 {sites.length}개)</div>
       </div>
       <div class="rank-card">
         {sites.map((s, i) => (
@@ -134,84 +144,99 @@ const sites = [
 <style>
   .wrap { max-width: 1000px; margin: auto; padding: 0 24px; }
   .hero { text-align: center; padding: 92px 0 70px; }
-  .eyebrow { font-size: 12px; font-weight: 850; letter-spacing: 0.16em; color: var(--accent); }
+  .eyebrow { font-size: 12px; font-weight: 850; letter-spacing: 0.16em; color: #6366f1; }
   .hero h1 { font-size: clamp(44px, 7.5vw, 76px); line-height: 1.06; letter-spacing: -0.065em; margin: 16px 0 20px; font-weight: 900; }
-  .hero h1 span { color: var(--accent); }
+  .hero h1 span { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .hero .lead { font-size: 20px; color: var(--muted); letter-spacing: -0.025em; margin: 0 auto; max-width: 690px; }
-  .hero-note { margin: 32px auto 0; max-width: 780px; text-align: left; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 18px 22px; font-size: 14px; color: var(--muted); box-shadow: 0 12px 40px rgba(0,0,0,.03); }
-  .hero-note b { color: var(--ink); }
+  .hero-note { margin: 32px auto 0; max-width: 780px; text-align: left; background: #ffffff; border: 1px solid #e0e7ff; border-radius: 18px; padding: 18px 22px; font-size: 14px; color: var(--muted); box-shadow: 0 12px 30px rgba(79, 70, 229, 0.06); }
+  .hero-note b { color: #4338ca; }
+  
   .section { padding: 38px 0 88px; }
   .section-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
-  .section-label { font-size: 11px; font-weight: 850; letter-spacing: 0.15em; color: var(--accent); }
+  .section-label { font-size: 11px; font-weight: 850; letter-spacing: 0.15em; color: #4f46e5; }
   .section h2 { font-size: 34px; line-height: 1.2; letter-spacing: -0.055em; margin: 7px 0 0; }
-  .section-sub { font-size: 13px; color: #9ca3af; }
-  .rank-card { background: var(--paper); border: 1px solid var(--line); border-radius: 26px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.03); }
+  
+  /* 동적 날짜 신규 스타일 */
+  .section-sub { font-size: 13px; color: #4b5563; font-weight: 600; display: flex; align-items: center; gap: 6px; background: #eef2ff; padding: 6px 14px; border-radius: 20px; border: 1px solid #c7d2fe; }
+  .update-dot { width: 7px; height: 7px; background-color: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #10b981; }
 
-  .site { border-bottom: 1px solid var(--line); transition: background-color .2s ease; }
+  /* 홍보 카드 스타일 개편 (화려한 톤앤매너) */
+  .rank-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 26px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,.04); }
+  .site { border-bottom: 1px solid #f1f5f9; transition: all .25s ease; position: relative; }
   .site:last-child { border-bottom: 0; }
-  .site-summary { display: grid; grid-template-columns: 58px 1fr auto 24px; gap: 18px; align-items: center; padding: 25px 28px; cursor: pointer; user-select: none; }
-  .site-summary:hover { background-color: #fafafa; }
-  .rank-no { width: 48px; height: 48px; border-radius: 14px; background: var(--soft); color: var(--ink); display: grid; place-items: center; font-weight: 900; font-size: 13px; }
-  .site-name { font-size: 19px; font-weight: 850; letter-spacing: -0.035em; }
-  .site-meta { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .site:hover { background-color: #f8fafc; }
+  
+  .site-summary { display: grid; grid-template-columns: 52px 1fr auto 24px; gap: 18px; align-items: center; padding: 24px 28px; cursor: pointer; user-select: none; }
+  
+  /* 원형 그라데이션 순위 배지 */
+  .rank-no { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: #3730a3; display: grid; place-items: center; font-weight: 900; font-size: 14px; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.12); }
+  .site:nth-child(1) .rank-no { background: linear-gradient(135deg, #fef08a 0%, #fde047 100%); color: #854d0e; }
+  .site:nth-child(2) .rank-no { background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); color: #334155; }
+  .site:nth-child(3) .rank-no { background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%); color: #9a3412; }
+
+  .site-name { font-size: 20px; font-weight: 850; letter-spacing: -0.035em; color: #0f172a; }
+  .site-meta { font-size: 13px; color: #64748b; margin-top: 2px; }
 
   .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
-  .badge { font-size: 11px; font-weight: 750; padding: 4px 9px; border-radius: 7px; background: var(--badge-bg); color: var(--badge-text); transition: all .2s ease; }
-  .site-summary:hover .badge.blue { background: var(--bluebg); color: var(--blue); }
-  .site-summary:hover .badge.green { background: var(--greenbg); color: var(--green); }
-  .site-summary:hover .badge.red { background: var(--redbg); color: var(--red); }
+  .badge { font-size: 11px; font-weight: 750; padding: 5px 10px; border-radius: 8px; transition: all .2s ease; }
+  .badge.blue { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .badge.green { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+  .badge.red { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
 
-  .site-button { font-size: 13px; font-weight: 800; background: var(--dark); color: #ffffff; border: 0; border-radius: 11px; padding: 11px 18px; white-space: nowrap; cursor: pointer; transition: all .2s ease; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
-  .site-button:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79,70,229,.28); }
+  /* 비비드 버튼 디자인 */
+  .site-button { font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%); color: #ffffff; border: 0; border-radius: 12px; padding: 11px 20px; white-space: nowrap; cursor: pointer; transition: all .2s ease; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25); }
+  .site-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); }
 
-  .chev { font-size: 18px; color: #9ca3af; transition: transform .3s ease; }
+  .chev { font-size: 18px; color: #94a3b8; transition: transform .3s ease; }
   :global(.site.open) .chev { transform: rotate(180deg); }
 
   .site-detail-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s cubic-bezier(0.4, 0, 0.2, 1); }
   :global(.site.open) .site-detail-wrapper { grid-template-rows: 1fr; }
   .site-detail-inner { overflow: hidden; }
-  .site-detail { padding: 0 28px 28px 104px; margin-top: 10px; }
+  .site-detail { padding: 0 28px 28px 98px; margin-top: 10px; }
   .detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .detail-box { background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 14px; padding: 14px 15px; }
-  .detail-box small { display: block; font-size: 11px; color: #9ca3af; }
-  .detail-box strong { font-size: 13px; color: var(--ink); }
-  .detail-note { font-size: 13px; color: var(--muted); margin: 15px 0 0; }
-  .disclaimer { font-size: 12px; color: #9ca3af; margin: 13px 3px 0; }
+  .detail-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 15px; }
+  .detail-box small { display: block; font-size: 11px; color: #64748b; }
+  .detail-box strong { font-size: 13px; color: #0f172a; }
+  .detail-note { font-size: 13px; color: #64748b; margin: 15px 0 0; }
+  .disclaimer { font-size: 12px; color: #94a3b8; margin: 13px 3px 0; }
 
-  .article-card { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: 30px 32px; margin: 13px 0; }
+  .article-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 22px; padding: 30px 32px; margin: 13px 0; box-shadow: 0 10px 25px rgba(0,0,0,.02); }
   .article-card h3 { font-size: 21px; line-height: 1.35; letter-spacing: -0.035em; margin: 0 0 12px; }
-  .article-card p { font-size: 15px; color: var(--muted); margin: 0; }
+  .article-card p { font-size: 15px; color: #475569; margin: 0; }
   .numbered { display: grid; grid-template-columns: 48px 1fr; gap: 18px; }
-  .big-num { font-size: 13px; font-weight: 900; color: var(--accent); padding-top: 3px; }
+  .big-num { font-size: 14px; font-weight: 900; color: #4f46e5; padding-top: 3px; }
 
-  .callout { background: var(--soft); border: 1px solid var(--line); border-radius: 22px; padding: 28px 30px; margin: 18px 0; }
-  .callout h3 { margin: 0 0 8px; font-size: 20px; color: var(--ink); }
-  .callout p { margin: 0; color: var(--muted); font-size: 14px; }
-  .callout.notice { background: #f3f4f6; border-color: #e5e7eb; }
+  .callout { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 22px; padding: 28px 30px; margin: 18px 0; }
+  .callout h3 { margin: 0 0 8px; font-size: 20px; color: #4c1d95; }
+  .callout p { margin: 0; color: #5b21b6; font-size: 14px; }
+  .callout.notice { background: #f8fafc; border-color: #cbd5e1; }
+  .callout.notice h3 { color: #0f172a; }
+  .callout.notice p { color: #475569; }
 
-  .score-card { background: var(--dark); color: #fff; border-radius: 26px; padding: 32px; margin: 25px 0; }
+  .score-card { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #fff; border-radius: 26px; padding: 36px; margin: 25px 0; box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15); }
   .score-card h3 { font-size: 25px; letter-spacing: -0.04em; margin: 5px 0 10px; }
-  .score-card p { color: #9ca3af; font-size: 13px; }
+  .score-card p { color: #94a3b8; font-size: 13px; }
   .score-row { display: grid; grid-template-columns: 1.15fr 70px 1.5fr; gap: 12px; padding: 15px 0; border-top: 1px solid rgba(255,255,255,.1); font-size: 14px; }
-  .score-row b { color: #a5b4fc; }
-  .score-row small { color: #9ca3af; }
+  .score-row b { color: #818cf8; font-size: 16px; }
+  .score-row small { color: #94a3b8; }
 
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .mini { padding: 25px 27px; background: var(--paper); border: 1px solid var(--line); border-radius: 20px; }
-  .mini h3 { font-size: 18px; margin: 0 0 8px; }
-  .mini p { font-size: 13px; color: var(--muted); margin: 0; }
-  .highlight { font-weight: 800; color: var(--ink); }
-  .quote { font-size: 24px; line-height: 1.5; letter-spacing: -0.04em; font-weight: 800; margin: 0; }
+  .mini { padding: 25px 27px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,.02); }
+  .mini h3 { font-size: 18px; margin: 0 0 8px; color: #0f172a; }
+  .mini p { font-size: 13px; color: #64748b; margin: 0; }
+  .highlight { font-weight: 800; color: #4338ca; }
+  .quote { font-size: 24px; line-height: 1.5; letter-spacing: -0.04em; font-weight: 800; margin: 0; color: #1e1b4b; }
   .closing { text-align: center; padding: 95px 0; }
   .closing h2 { font-size: 48px; line-height: 1.18; letter-spacing: -0.065em; margin: 12px 0; }
-  .closing h2 span { color: var(--accent); }
+  .closing h2 span { color: #4f46e5; }
 
   .faq { padding-bottom: 100px; }
-  .faq-list { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; }
-  .faq details { padding: 21px 24px; border-bottom: 1px solid var(--line); }
+  .faq-list { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.02); }
+  .faq details { padding: 21px 24px; border-bottom: 1px solid #f1f5f9; }
   .faq details:last-child { border-bottom: 0; }
-  .faq summary { font-size: 16px; font-weight: 800; cursor: pointer; }
-  .faq p { font-size: 14px; color: var(--muted); margin: 12px 0 0; }
+  .faq summary { font-size: 16px; font-weight: 800; cursor: pointer; color: #0f172a; }
+  .faq p { font-size: 14px; color: #64748b; margin: 12px 0 0; }
 
   @media(max-width:720px){
     .wrap { padding: 0 16px; }
@@ -220,12 +245,12 @@ const sites = [
     .hero .lead { font-size: 17px; }
     .section { padding-bottom: 60px; }
     .section h2 { font-size: 29px; }
-    .site-summary { grid-template-columns: 44px 1fr 20px; gap: 12px; padding: 19px 16px; }
-    .rank-no { width: 40px; height: 40px; border-radius: 12px; }
+    .site-summary { grid-template-columns: 40px 1fr 20px; gap: 12px; padding: 19px 16px; }
+    .rank-no { width: 38px; height: 38px; font-size: 13px; }
     .site-name { font-size: 17px; }
     .site-button { grid-column: 2; width: max-content; padding: 8px 14px; }
     .chev { grid-column: 3; grid-row: 1; }
-    .site-detail { padding: 0 16px 22px 72px; margin-top: 8px; }
+    .site-detail { padding: 0 16px 22px 66px; margin-top: 8px; }
     .detail-grid { grid-template-columns: 1fr; }
     .article-card { padding: 23px 20px; }
     .numbered { grid-template-columns: 34px 1fr; gap: 10px; }
